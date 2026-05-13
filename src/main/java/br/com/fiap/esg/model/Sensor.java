@@ -1,0 +1,23 @@
+package br.com.fiap.esg.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name = "ESG_SENSOR")
+public class Sensor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SENSOR")
+    @SequenceGenerator(name = "SEQ_SENSOR", sequenceName = "SEQ_SENSOR", allocationSize = 1)
+    @Column(name = "id_sensor")
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "id_dispositivo", nullable = false)
+    private Dispositivo dispositivo;
+
+    @Column(name = "ativo", nullable = false, length = 1)
+    private String ativo;
+}
