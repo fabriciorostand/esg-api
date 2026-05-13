@@ -9,8 +9,8 @@ import lombok.Data;
 public class Sensor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SENSOR")
-    @SequenceGenerator(name = "SEQ_SENSOR", sequenceName = "SEQ_SENSOR", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ESG_SENSOR")
+    @SequenceGenerator(name = "SEQ_ESG_SENSOR", sequenceName = "SEQ_ESG_SENSOR", allocationSize = 1)
     @Column(name = "id_sensor")
     private Long id;
 
@@ -18,6 +18,6 @@ public class Sensor {
     @JoinColumn(name = "id_dispositivo", nullable = false)
     private Dispositivo dispositivo;
 
-    @Column(name = "ativo", nullable = false, length = 1)
+    @Column(name = "ativo", nullable = false, columnDefinition = "CHAR(1)")
     private String ativo;
 }

@@ -2,6 +2,8 @@ package br.com.fiap.esg.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -10,8 +12,8 @@ import java.time.LocalDate;
 public class MetaConsumo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_META_CONSUMO")
-    @SequenceGenerator(name = "SEQ_META_CONSUMO", sequenceName = "SEQ_META_CONSUMO", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ESG_META_CONSUMO")
+    @SequenceGenerator(name = "SEQ_ESG_META_CONSUMO", sequenceName = "SEQ_ESG_META_CONSUMO", allocationSize = 1)
     @Column(name = "id_meta_consumo")
     private Long id;
 
@@ -23,7 +25,7 @@ public class MetaConsumo {
     private String tipo;
 
     @Column(name = "meta_kwh", nullable = false)
-    private Double metaKwh;
+    private BigDecimal metaKwh;
 
     @Column(name = "data_inicio", nullable = false)
     private LocalDate dataInicio;
