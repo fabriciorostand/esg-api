@@ -2,10 +2,11 @@ package br.com.fiap.esg.controller;
 
 import br.com.fiap.esg.dto.UnidadeConsumidoraRequest;
 import br.com.fiap.esg.dto.UnidadeConsumidoraResponse;
-import br.com.fiap.esg.model.UnidadeConsumidora;
 import br.com.fiap.esg.service.UnidadeConsumidoraService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -35,6 +36,29 @@ public class UnidadeConsumidoraController {
         UnidadeConsumidoraResponse unidadeConsumidora = service.buscarPorId(id);
 
         return ResponseEntity.ok(unidadeConsumidora);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<UnidadeConsumidoraResponse>> listar(Pageable paginacao) {
+        Page<UnidadeConsumidoraResponse> unidadesConsumidoras = service.listar(paginacao);
+
+        return ResponseEntity.ok(unidadesConsumidoras);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UnidadeConsumidoraResponse> atualizar(@PathVariable Long id, @RequestBody @Valid UnidadeConsumidoraRequest request) {
+        UnidadeConsumidoraResponse unidadeConsumidora = service.atualizar(id, request);
+
+        return ResponseEntity.ok(unidadeConsumidora);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        service.deletar(id);
+
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
 }

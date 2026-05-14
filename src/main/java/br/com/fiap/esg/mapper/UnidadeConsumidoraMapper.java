@@ -5,6 +5,7 @@ import br.com.fiap.esg.dto.UnidadeConsumidoraResponse;
 import br.com.fiap.esg.model.UnidadeConsumidora;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface UnidadeConsumidoraMapper {
@@ -14,5 +15,9 @@ public interface UnidadeConsumidoraMapper {
     UnidadeConsumidora paraEntidade(UnidadeConsumidoraRequest request);
 
     UnidadeConsumidoraResponse paraResponse(UnidadeConsumidora unidadeConsumidora);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "endereco.id", ignore = true)
+    void atualizarEntidade(UnidadeConsumidoraRequest request, @MappingTarget UnidadeConsumidora unidadeConsumidora);
 
 }
