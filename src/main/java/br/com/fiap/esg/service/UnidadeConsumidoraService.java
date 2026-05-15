@@ -21,9 +21,9 @@ public class UnidadeConsumidoraService {
 
     @Transactional
     public UnidadeConsumidoraResponse cadastrar(UnidadeConsumidoraRequest request) {
-        return mapper.paraResponse(
-                repository.save(
-                        mapper.paraEntidade(request)));
+        UnidadeConsumidora unidadeConsumidora = mapper.paraEntidade(request);
+
+        return mapper.paraResponse(repository.save(unidadeConsumidora));
     }
 
     public UnidadeConsumidoraResponse buscarPorId(Long id) {

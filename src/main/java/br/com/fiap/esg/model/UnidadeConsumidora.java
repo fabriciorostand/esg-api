@@ -20,10 +20,10 @@ public class UnidadeConsumidora {
     @JoinColumn(name = "id_endereco", nullable = false)
     private Endereco endereco;
 
-    @Column(name = "nome", nullable = false)
+    @Column(name = "nome", nullable = false, length = 35)
     private String nome;
 
-    @Column(name = "tipo", nullable = false)
+    @Column(name = "tipo", nullable = false, length = 20)
     private String tipo;
 
     @Column(name = "area_total", nullable = false)
