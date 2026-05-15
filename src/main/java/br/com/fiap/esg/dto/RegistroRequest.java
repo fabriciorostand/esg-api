@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 public record RegistroRequest(
 
         @NotBlank(message = "{email.obrigatorio}")
-        @Email(message = "{email.login.invalido}")
+        @Email(message = "{email.invalido}")
         String email,
 
         @NotBlank(message = "{senha.obrigatoria}")
