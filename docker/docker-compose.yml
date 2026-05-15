@@ -21,7 +21,9 @@ services:
       - esg-network
 
   esg-api:
-    build: .
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     container_name: esg_spring_api
     ports:
       - "8080:8080"
