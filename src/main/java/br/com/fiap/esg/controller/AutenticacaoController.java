@@ -7,6 +7,9 @@ import br.com.fiap.esg.infra.security.TokenJWTResponse;
 import br.com.fiap.esg.infra.security.TokenService;
 import br.com.fiap.esg.model.Usuario;
 import br.com.fiap.esg.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +31,12 @@ public class AutenticacaoController {
     private final UsuarioService usuarioService;
 
     @PostMapping("/registro")
+    @Operation(description = "Endpoint responsavel por registrar um novo usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Usuario registrado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Erro de requisicao"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
     public ResponseEntity<RegistroResponse> registrar(@RequestBody @Valid RegistroRequest request) {
         var usuario = usuarioService.registrar(request);
 
@@ -37,6 +46,13 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/login")
+    @Operation(description = "Endpoint responsavel por autenticar um usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuario autenticado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Erro de requisicao"),
+            @ApiResponse(responseCode = "401", description = "Credenciais invalidas"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+    })
     public ResponseEntity<TokenJWTResponse> logar(@RequestBody @Valid LoginRequest request) {
         var authenticationToken = new UsernamePasswordAuthenticationToken(request.email(), request.senha());
         var authentication = manager.authenticate(authenticationToken);
