@@ -1,8 +1,8 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.AlertaMetaRequest;
-import br.com.fiap.esg.dto.AlertaMetaResponse;
-import br.com.fiap.esg.service.AlertaMetaService;
+import br.com.fiap.esg.domain.alerta_meta.dto.AlertaMetaRequest;
+import br.com.fiap.esg.domain.alerta_meta.dto.AlertaMetaResponse;
+import br.com.fiap.esg.domain.alerta_meta.AlertaMetaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

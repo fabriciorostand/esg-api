@@ -1,10 +1,10 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.MetaConsumoRequest;
-import br.com.fiap.esg.dto.MetaConsumoResponse;
+import br.com.fiap.esg.domain.meta_consumo.dto.MetaConsumoRequest;
+import br.com.fiap.esg.domain.meta_consumo.dto.MetaConsumoResponse;
 import br.com.fiap.esg.infra.security.TokenService;
-import br.com.fiap.esg.repository.UsuarioRepository;
-import br.com.fiap.esg.service.MetaConsumoService;
+import br.com.fiap.esg.domain.usuario.UsuarioRepository;
+import br.com.fiap.esg.domain.meta_consumo.MetaConsumoService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

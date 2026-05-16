@@ -1,12 +1,12 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.EnderecoRequest;
-import br.com.fiap.esg.dto.EnderecoResponse;
-import br.com.fiap.esg.dto.UnidadeConsumidoraRequest;
-import br.com.fiap.esg.dto.UnidadeConsumidoraResponse;
+import br.com.fiap.esg.domain.unidade_consumidora.dto.EnderecoRequest;
+import br.com.fiap.esg.domain.unidade_consumidora.dto.EnderecoResponse;
+import br.com.fiap.esg.domain.unidade_consumidora.dto.UnidadeConsumidoraRequest;
+import br.com.fiap.esg.domain.unidade_consumidora.dto.UnidadeConsumidoraResponse;
 import br.com.fiap.esg.infra.security.TokenService;
-import br.com.fiap.esg.repository.UsuarioRepository;
-import br.com.fiap.esg.service.UnidadeConsumidoraService;
+import br.com.fiap.esg.domain.usuario.UsuarioRepository;
+import br.com.fiap.esg.domain.unidade_consumidora.UnidadeConsumidoraService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

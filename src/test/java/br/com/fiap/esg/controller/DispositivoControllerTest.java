@@ -1,10 +1,10 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.DispositivoRequest;
-import br.com.fiap.esg.dto.DispositivoResponse;
+import br.com.fiap.esg.domain.dispositivo.dto.DispositivoRequest;
+import br.com.fiap.esg.domain.dispositivo.dto.DispositivoResponse;
 import br.com.fiap.esg.infra.security.TokenService;
-import br.com.fiap.esg.repository.UsuarioRepository;
-import br.com.fiap.esg.service.DispositivoService;
+import br.com.fiap.esg.domain.usuario.UsuarioRepository;
+import br.com.fiap.esg.domain.dispositivo.DispositivoService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

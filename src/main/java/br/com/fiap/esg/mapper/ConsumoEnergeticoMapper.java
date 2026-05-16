@@ -1,9 +1,9 @@
 package br.com.fiap.esg.mapper;
 
-import br.com.fiap.esg.dto.ConsumoEnergeticoRequest;
-import br.com.fiap.esg.dto.ConsumoEnergeticoResponse;
-import br.com.fiap.esg.dto.ConsumoEnergeticoUpdateRequest;
-import br.com.fiap.esg.model.ConsumoEnergetico;
+import br.com.fiap.esg.domain.consumo_energetico.dto.ConsumoEnergeticoRequest;
+import br.com.fiap.esg.domain.consumo_energetico.dto.ConsumoEnergeticoResponse;
+import br.com.fiap.esg.domain.consumo_energetico.dto.ConsumoEnergeticoUpdateRequest;
+import br.com.fiap.esg.domain.consumo_energetico.ConsumoEnergetico;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

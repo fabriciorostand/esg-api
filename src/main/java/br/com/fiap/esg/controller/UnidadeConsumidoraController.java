@@ -1,8 +1,8 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.UnidadeConsumidoraRequest;
-import br.com.fiap.esg.dto.UnidadeConsumidoraResponse;
-import br.com.fiap.esg.service.UnidadeConsumidoraService;
+import br.com.fiap.esg.domain.unidade_consumidora.dto.UnidadeConsumidoraRequest;
+import br.com.fiap.esg.domain.unidade_consumidora.dto.UnidadeConsumidoraResponse;
+import br.com.fiap.esg.domain.unidade_consumidora.UnidadeConsumidoraService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

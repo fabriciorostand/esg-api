@@ -1,8 +1,8 @@
 package br.com.fiap.esg.mapper;
 
-import br.com.fiap.esg.dto.AlertaMetaRequest;
-import br.com.fiap.esg.dto.AlertaMetaResponse;
-import br.com.fiap.esg.model.AlertaMeta;
+import br.com.fiap.esg.domain.alerta_meta.dto.AlertaMetaRequest;
+import br.com.fiap.esg.domain.alerta_meta.dto.AlertaMetaResponse;
+import br.com.fiap.esg.domain.alerta_meta.AlertaMeta;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

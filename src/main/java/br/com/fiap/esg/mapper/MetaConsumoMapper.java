@@ -1,8 +1,8 @@
 package br.com.fiap.esg.mapper;
 
-import br.com.fiap.esg.dto.MetaConsumoRequest;
-import br.com.fiap.esg.dto.MetaConsumoResponse;
-import br.com.fiap.esg.model.MetaConsumo;
+import br.com.fiap.esg.domain.meta_consumo.dto.MetaConsumoRequest;
+import br.com.fiap.esg.domain.meta_consumo.dto.MetaConsumoResponse;
+import br.com.fiap.esg.domain.meta_consumo.MetaConsumo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

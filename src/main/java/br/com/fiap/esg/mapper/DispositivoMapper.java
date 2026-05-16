@@ -1,8 +1,8 @@
 package br.com.fiap.esg.mapper;
 
-import br.com.fiap.esg.dto.DispositivoRequest;
-import br.com.fiap.esg.dto.DispositivoResponse;
-import br.com.fiap.esg.model.Dispositivo;
+import br.com.fiap.esg.domain.dispositivo.dto.DispositivoRequest;
+import br.com.fiap.esg.domain.dispositivo.dto.DispositivoResponse;
+import br.com.fiap.esg.domain.dispositivo.Dispositivo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

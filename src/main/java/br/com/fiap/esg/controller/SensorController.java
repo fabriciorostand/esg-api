@@ -1,8 +1,8 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.SensorRequest;
-import br.com.fiap.esg.dto.SensorResponse;
-import br.com.fiap.esg.service.SensorService;
+import br.com.fiap.esg.domain.sensor.dto.SensorRequest;
+import br.com.fiap.esg.domain.sensor.dto.SensorResponse;
+import br.com.fiap.esg.domain.sensor.SensorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

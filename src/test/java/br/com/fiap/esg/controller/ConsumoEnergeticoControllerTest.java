@@ -1,11 +1,11 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.ConsumoEnergeticoRequest;
-import br.com.fiap.esg.dto.ConsumoEnergeticoResponse;
-import br.com.fiap.esg.dto.ConsumoEnergeticoUpdateRequest;
+import br.com.fiap.esg.domain.consumo_energetico.dto.ConsumoEnergeticoRequest;
+import br.com.fiap.esg.domain.consumo_energetico.dto.ConsumoEnergeticoResponse;
+import br.com.fiap.esg.domain.consumo_energetico.dto.ConsumoEnergeticoUpdateRequest;
 import br.com.fiap.esg.infra.security.TokenService;
-import br.com.fiap.esg.repository.UsuarioRepository;
-import br.com.fiap.esg.service.ConsumoEnergeticoService;
+import br.com.fiap.esg.domain.usuario.UsuarioRepository;
+import br.com.fiap.esg.domain.consumo_energetico.ConsumoEnergeticoService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

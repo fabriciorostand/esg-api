@@ -1,8 +1,8 @@
 package br.com.fiap.esg.mapper;
 
-import br.com.fiap.esg.dto.UnidadeConsumidoraRequest;
-import br.com.fiap.esg.dto.UnidadeConsumidoraResponse;
-import br.com.fiap.esg.model.UnidadeConsumidora;
+import br.com.fiap.esg.domain.unidade_consumidora.dto.UnidadeConsumidoraRequest;
+import br.com.fiap.esg.domain.unidade_consumidora.dto.UnidadeConsumidoraResponse;
+import br.com.fiap.esg.domain.unidade_consumidora.UnidadeConsumidora;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

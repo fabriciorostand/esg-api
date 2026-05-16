@@ -1,12 +1,12 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.LoginRequest;
-import br.com.fiap.esg.dto.RegistroRequest;
-import br.com.fiap.esg.dto.RegistroResponse;
+import br.com.fiap.esg.domain.usuario.dto.LoginRequest;
+import br.com.fiap.esg.domain.usuario.dto.RegistroRequest;
+import br.com.fiap.esg.domain.usuario.dto.RegistroResponse;
 import br.com.fiap.esg.infra.security.TokenJWTResponse;
 import br.com.fiap.esg.infra.security.TokenService;
-import br.com.fiap.esg.model.Usuario;
-import br.com.fiap.esg.service.UsuarioService;
+import br.com.fiap.esg.domain.usuario.Usuario;
+import br.com.fiap.esg.domain.usuario.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

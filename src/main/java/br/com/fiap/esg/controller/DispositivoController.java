@@ -1,8 +1,8 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.DispositivoRequest;
-import br.com.fiap.esg.dto.DispositivoResponse;
-import br.com.fiap.esg.service.DispositivoService;
+import br.com.fiap.esg.domain.dispositivo.dto.DispositivoRequest;
+import br.com.fiap.esg.domain.dispositivo.dto.DispositivoResponse;
+import br.com.fiap.esg.domain.dispositivo.DispositivoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

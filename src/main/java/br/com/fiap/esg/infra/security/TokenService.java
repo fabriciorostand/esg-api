@@ -1,6 +1,6 @@
 package br.com.fiap.esg.infra.security;
 
-import br.com.fiap.esg.model.Usuario;
+import br.com.fiap.esg.domain.usuario.Usuario;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;

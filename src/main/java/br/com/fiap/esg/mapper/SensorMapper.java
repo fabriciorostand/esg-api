@@ -1,8 +1,8 @@
 package br.com.fiap.esg.mapper;
 
-import br.com.fiap.esg.dto.SensorRequest;
-import br.com.fiap.esg.dto.SensorResponse;
-import br.com.fiap.esg.model.Sensor;
+import br.com.fiap.esg.domain.sensor.dto.SensorRequest;
+import br.com.fiap.esg.domain.sensor.dto.SensorResponse;
+import br.com.fiap.esg.domain.sensor.Sensor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

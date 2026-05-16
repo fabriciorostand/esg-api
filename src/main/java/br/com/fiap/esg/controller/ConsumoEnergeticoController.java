@@ -1,9 +1,9 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.ConsumoEnergeticoRequest;
-import br.com.fiap.esg.dto.ConsumoEnergeticoResponse;
-import br.com.fiap.esg.dto.ConsumoEnergeticoUpdateRequest;
-import br.com.fiap.esg.service.ConsumoEnergeticoService;
+import br.com.fiap.esg.domain.consumo_energetico.dto.ConsumoEnergeticoRequest;
+import br.com.fiap.esg.domain.consumo_energetico.dto.ConsumoEnergeticoResponse;
+import br.com.fiap.esg.domain.consumo_energetico.dto.ConsumoEnergeticoUpdateRequest;
+import br.com.fiap.esg.domain.consumo_energetico.ConsumoEnergeticoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

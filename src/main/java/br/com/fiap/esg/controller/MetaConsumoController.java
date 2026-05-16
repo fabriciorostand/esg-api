@@ -1,8 +1,8 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.MetaConsumoRequest;
-import br.com.fiap.esg.dto.MetaConsumoResponse;
-import br.com.fiap.esg.service.MetaConsumoService;
+import br.com.fiap.esg.domain.meta_consumo.dto.MetaConsumoRequest;
+import br.com.fiap.esg.domain.meta_consumo.dto.MetaConsumoResponse;
+import br.com.fiap.esg.domain.meta_consumo.MetaConsumoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

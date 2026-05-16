@@ -1,6 +1,6 @@
 package br.com.fiap.esg.infra.security;
 
-import br.com.fiap.esg.repository.UsuarioRepository;
+import br.com.fiap.esg.domain.usuario.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

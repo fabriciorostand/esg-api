@@ -1,13 +1,13 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.LoginRequest;
-import br.com.fiap.esg.dto.RegistroRequest;
-import br.com.fiap.esg.dto.RegistroResponse;
+import br.com.fiap.esg.domain.usuario.dto.LoginRequest;
+import br.com.fiap.esg.domain.usuario.dto.RegistroRequest;
+import br.com.fiap.esg.domain.usuario.dto.RegistroResponse;
 import br.com.fiap.esg.infra.security.TokenJWTResponse;
 import br.com.fiap.esg.infra.security.TokenService;
-import br.com.fiap.esg.model.Usuario;
-import br.com.fiap.esg.repository.UsuarioRepository;
-import br.com.fiap.esg.service.UsuarioService;
+import br.com.fiap.esg.domain.usuario.Usuario;
+import br.com.fiap.esg.domain.usuario.UsuarioRepository;
+import br.com.fiap.esg.domain.usuario.UsuarioService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
