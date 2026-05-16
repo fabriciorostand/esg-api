@@ -1,10 +1,10 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.DispositivoRequest;
-import br.com.fiap.esg.dto.DispositivoResponse;
+import br.com.fiap.esg.dto.MetaConsumoRequest;
+import br.com.fiap.esg.dto.MetaConsumoResponse;
 import br.com.fiap.esg.infra.security.TokenService;
 import br.com.fiap.esg.repository.UsuarioRepository;
-import br.com.fiap.esg.service.DispositivoService;
+import br.com.fiap.esg.service.MetaConsumoService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +19,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -26,21 +29,21 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-@WebMvcTest(DispositivoController.class)
+@WebMvcTest(MetaConsumoController.class)
 @AutoConfigureJsonTesters
-class DispositivoControllerTest {
+class MetaConsumoControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
     @Autowired
-    private JacksonTester<DispositivoRequest> dispositivoRequestJson;
+    private JacksonTester<MetaConsumoRequest> metaConsumoRequestJson;
 
     @Autowired
-    private JacksonTester<DispositivoResponse> dispositivoResponseJson;
+    private JacksonTester<MetaConsumoResponse> metaConsumoResponseJson;
 
     @MockitoBean
-    private DispositivoService service;
+    private MetaConsumoService service;
 
     @MockitoBean
     private TokenService tokenService;
@@ -52,7 +55,7 @@ class DispositivoControllerTest {
     @DisplayName("Deveria devolver codigo http 400 quando informacoes estao invalidas")
     @WithMockUser
     void cadastrarCenario1() throws Exception {
-        MockHttpServletResponse response = mvc.perform(post("/api/dispositivos").with(csrf()))
+        MockHttpServletResponse response = mvc.perform(post("/api/metas").with(csrf()))
                 .andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -62,36 +65,42 @@ class DispositivoControllerTest {
     @DisplayName("Deveria devolver codigo http 201 quando informacoes estao validas")
     @WithMockUser
     void cadastrarCenario2() throws Exception {
-        DispositivoRequest request = criarRequest();
-        DispositivoResponse responseSimulada = criarResponse();
+        MetaConsumoRequest request = criarRequest();
+        MetaConsumoResponse responseSimulada = criarResponse();
 
         when(service.cadastrar(any())).thenReturn(responseSimulada);
 
         MockHttpServletResponse response = mvc.perform(
-                post("/api/dispositivos")
+                post("/api/metas")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(dispositivoRequestJson.write(request).getJson())
+                        .content(metaConsumoRequestJson.write(request).getJson())
         ).andReturn().getResponse();
 
-        String jsonEsperado = dispositivoResponseJson.write(responseSimulada).getJson();
+        String jsonEsperado = metaConsumoResponseJson.write(responseSimulada).getJson();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(response.getHeader("Location")).endsWith("/api/dispositivos/1");
+        assertThat(response.getHeader("Location")).endsWith("/api/metas/1");
         assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo http 400 quando campo obrigatorio nao for informado")
+    @DisplayName("Deveria devolver codigo http 400 quando tipo ultrapassar tamanho maximo")
     @WithMockUser
     void cadastrarCenario3() throws Exception {
-        DispositivoRequest request = new DispositivoRequest(null, "Ar Condicionado", 3500.0, "ATIVO", 150.0, 30);
+        MetaConsumoRequest request = new MetaConsumoRequest(
+                1L,
+                "MENSAL",
+                BigDecimal.valueOf(500),
+                LocalDate.of(2026, 1, 1),
+                LocalDate.of(2026, 1, 31)
+        );
 
         MockHttpServletResponse response = mvc.perform(
-                post("/api/dispositivos")
+                post("/api/metas")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(dispositivoRequestJson.write(request).getJson())
+                        .content(metaConsumoRequestJson.write(request).getJson())
         ).andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -101,36 +110,49 @@ class DispositivoControllerTest {
     @DisplayName("Deveria devolver codigo http 200 ao buscar por id")
     @WithMockUser
     void buscarPorIdCenario1() throws Exception {
-        DispositivoResponse responseSimulada = criarResponse();
+        MetaConsumoResponse responseSimulada = criarResponse();
 
         when(service.buscarPorId(1L)).thenReturn(responseSimulada);
 
-        MockHttpServletResponse response = mvc.perform(get("/api/dispositivos/1"))
+        MockHttpServletResponse response = mvc.perform(get("/api/metas/1"))
                 .andReturn().getResponse();
 
-        String jsonEsperado = dispositivoResponseJson.write(responseSimulada).getJson();
+        String jsonEsperado = metaConsumoResponseJson.write(responseSimulada).getJson();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo http 404 ao buscar dispositivo inexistente")
+    @DisplayName("Deveria devolver codigo http 404 ao buscar meta inexistente")
     @WithMockUser
     void buscarPorIdCenario2() throws Exception {
         when(service.buscarPorId(1L)).thenThrow(EntityNotFoundException.class);
 
-        MockHttpServletResponse response = mvc.perform(get("/api/dispositivos/1"))
+        MockHttpServletResponse response = mvc.perform(get("/api/metas/1"))
                 .andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
 
-    private DispositivoRequest criarRequest() {
-        return new DispositivoRequest(1L, "Ar Condicionado", 3500.0, "ATIVO", 150.0, 30);
+    private MetaConsumoRequest criarRequest() {
+        return new MetaConsumoRequest(
+                1L,
+                "MTH",
+                BigDecimal.valueOf(500),
+                LocalDate.of(2026, 1, 1),
+                LocalDate.of(2026, 1, 31)
+        );
     }
 
-    private DispositivoResponse criarResponse() {
-        return new DispositivoResponse(1L, null, "Ar Condicionado", 3500.0, "ATIVO", 150.0, 30);
+    private MetaConsumoResponse criarResponse() {
+        return new MetaConsumoResponse(
+                1L,
+                null,
+                "MTH",
+                BigDecimal.valueOf(500),
+                LocalDate.of(2026, 1, 1),
+                LocalDate.of(2026, 1, 31)
+        );
     }
 }

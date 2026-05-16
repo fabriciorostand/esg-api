@@ -1,10 +1,10 @@
 package br.com.fiap.esg.controller;
 
-import br.com.fiap.esg.dto.DispositivoRequest;
-import br.com.fiap.esg.dto.DispositivoResponse;
+import br.com.fiap.esg.dto.SensorRequest;
+import br.com.fiap.esg.dto.SensorResponse;
 import br.com.fiap.esg.infra.security.TokenService;
 import br.com.fiap.esg.repository.UsuarioRepository;
-import br.com.fiap.esg.service.DispositivoService;
+import br.com.fiap.esg.service.SensorService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,21 +26,21 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-@WebMvcTest(DispositivoController.class)
+@WebMvcTest(SensorController.class)
 @AutoConfigureJsonTesters
-class DispositivoControllerTest {
+class SensorControllerTest {
 
     @Autowired
     private MockMvc mvc;
 
     @Autowired
-    private JacksonTester<DispositivoRequest> dispositivoRequestJson;
+    private JacksonTester<SensorRequest> sensorRequestJson;
 
     @Autowired
-    private JacksonTester<DispositivoResponse> dispositivoResponseJson;
+    private JacksonTester<SensorResponse> sensorResponseJson;
 
     @MockitoBean
-    private DispositivoService service;
+    private SensorService service;
 
     @MockitoBean
     private TokenService tokenService;
@@ -52,7 +52,7 @@ class DispositivoControllerTest {
     @DisplayName("Deveria devolver codigo http 400 quando informacoes estao invalidas")
     @WithMockUser
     void cadastrarCenario1() throws Exception {
-        MockHttpServletResponse response = mvc.perform(post("/api/dispositivos").with(csrf()))
+        MockHttpServletResponse response = mvc.perform(post("/api/sensores").with(csrf()))
                 .andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -62,36 +62,36 @@ class DispositivoControllerTest {
     @DisplayName("Deveria devolver codigo http 201 quando informacoes estao validas")
     @WithMockUser
     void cadastrarCenario2() throws Exception {
-        DispositivoRequest request = criarRequest();
-        DispositivoResponse responseSimulada = criarResponse();
+        SensorRequest request = criarRequest();
+        SensorResponse responseSimulada = criarResponse();
 
         when(service.cadastrar(any())).thenReturn(responseSimulada);
 
         MockHttpServletResponse response = mvc.perform(
-                post("/api/dispositivos")
+                post("/api/sensores")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(dispositivoRequestJson.write(request).getJson())
+                        .content(sensorRequestJson.write(request).getJson())
         ).andReturn().getResponse();
 
-        String jsonEsperado = dispositivoResponseJson.write(responseSimulada).getJson();
+        String jsonEsperado = sensorResponseJson.write(responseSimulada).getJson();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.CREATED.value());
-        assertThat(response.getHeader("Location")).endsWith("/api/dispositivos/1");
+        assertThat(response.getHeader("Location")).endsWith("/api/sensores/1");
         assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo http 400 quando campo obrigatorio nao for informado")
+    @DisplayName("Deveria devolver codigo http 400 quando ativo tiver mais de um caractere")
     @WithMockUser
     void cadastrarCenario3() throws Exception {
-        DispositivoRequest request = new DispositivoRequest(null, "Ar Condicionado", 3500.0, "ATIVO", 150.0, 30);
+        SensorRequest request = new SensorRequest(1L, "SIM");
 
         MockHttpServletResponse response = mvc.perform(
-                post("/api/dispositivos")
+                post("/api/sensores")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(dispositivoRequestJson.write(request).getJson())
+                        .content(sensorRequestJson.write(request).getJson())
         ).andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
@@ -101,36 +101,36 @@ class DispositivoControllerTest {
     @DisplayName("Deveria devolver codigo http 200 ao buscar por id")
     @WithMockUser
     void buscarPorIdCenario1() throws Exception {
-        DispositivoResponse responseSimulada = criarResponse();
+        SensorResponse responseSimulada = criarResponse();
 
         when(service.buscarPorId(1L)).thenReturn(responseSimulada);
 
-        MockHttpServletResponse response = mvc.perform(get("/api/dispositivos/1"))
+        MockHttpServletResponse response = mvc.perform(get("/api/sensores/1"))
                 .andReturn().getResponse();
 
-        String jsonEsperado = dispositivoResponseJson.write(responseSimulada).getJson();
+        String jsonEsperado = sensorResponseJson.write(responseSimulada).getJson();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(response.getContentAsString()).isEqualTo(jsonEsperado);
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo http 404 ao buscar dispositivo inexistente")
+    @DisplayName("Deveria devolver codigo http 404 ao buscar sensor inexistente")
     @WithMockUser
     void buscarPorIdCenario2() throws Exception {
         when(service.buscarPorId(1L)).thenThrow(EntityNotFoundException.class);
 
-        MockHttpServletResponse response = mvc.perform(get("/api/dispositivos/1"))
+        MockHttpServletResponse response = mvc.perform(get("/api/sensores/1"))
                 .andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
 
-    private DispositivoRequest criarRequest() {
-        return new DispositivoRequest(1L, "Ar Condicionado", 3500.0, "ATIVO", 150.0, 30);
+    private SensorRequest criarRequest() {
+        return new SensorRequest(1L, "S");
     }
 
-    private DispositivoResponse criarResponse() {
-        return new DispositivoResponse(1L, null, "Ar Condicionado", 3500.0, "ATIVO", 150.0, 30);
+    private SensorResponse criarResponse() {
+        return new SensorResponse(1L, null, "S");
     }
 }
