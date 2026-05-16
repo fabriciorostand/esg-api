@@ -706,6 +706,367 @@
           "response": []
         }
       ]
+    },
+    {
+      "name": "Actuator",
+      "description": "Endpoints de observabilidade expostos por management.endpoints.web.exposure.include=*.",
+      "item": [
+        {
+          "name": "Discovery",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Health - DB",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/health/db",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "health",
+                "db"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/info",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "info"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Metrics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/metrics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "metrics"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Metric by Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/metrics/{{actuatorMetricName}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "metrics",
+                "{{actuatorMetricName}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Mappings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/mappings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "mappings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Beans",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/beans",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "beans"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Config Props",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/configprops",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "configprops"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Conditions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/conditions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "conditions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Environment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/env",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "env"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Environment Property",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/env/{{actuatorEnvProperty}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "env",
+                "{{actuatorEnvProperty}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Loggers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/loggers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "loggers"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logger by Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/loggers/{{actuatorLoggerName}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "loggers",
+                "{{actuatorLoggerName}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Set Logger Level",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"configuredLevel\": \"DEBUG\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/actuator/loggers/{{actuatorLoggerName}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "loggers",
+                "{{actuatorLoggerName}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Flyway",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/flyway",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "flyway"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Scheduled Tasks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/scheduledtasks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "scheduledtasks"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Thread Dump",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/threaddump",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "threaddump"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Heap Dump",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/heapdump",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "heapdump"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "variable": [
@@ -762,6 +1123,21 @@
     {
       "key": "idAlertaMeta",
       "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "actuatorMetricName",
+      "value": "jvm.memory.used",
+      "type": "string"
+    },
+    {
+      "key": "actuatorEnvProperty",
+      "value": "spring.application.name",
+      "type": "string"
+    },
+    {
+      "key": "actuatorLoggerName",
+      "value": "br.com.fiap.esg",
       "type": "string"
     }
   ]
