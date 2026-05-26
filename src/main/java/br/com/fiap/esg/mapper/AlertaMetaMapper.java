@@ -5,6 +5,7 @@ import br.com.fiap.esg.domain.alerta_meta.dto.AlertaMetaResponse;
 import br.com.fiap.esg.domain.alerta_meta.AlertaMeta;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = {MetaConsumoMapper.class})
 public interface AlertaMetaMapper {
@@ -14,4 +15,8 @@ public interface AlertaMetaMapper {
     AlertaMeta paraEntidade(AlertaMetaRequest request);
 
     AlertaMetaResponse paraResponse(AlertaMeta alertaMeta);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "metaConsumo", ignore = true)
+    void atualizarEntidade(AlertaMetaRequest request, @MappingTarget AlertaMeta alertaMeta);
 }

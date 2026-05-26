@@ -130,6 +130,48 @@ class UnidadeConsumidoraControllerTest {
     }
 
     @Test
+    @DisplayName("Deveria devolver codigo http 400 quando endereco interno estiver invalido")
+    @WithMockUser
+    void cadastrarCenario5() throws Exception {
+        UnidadeConsumidoraRequest request = new UnidadeConsumidoraRequest(
+                new EnderecoRequest("", "Rua das Flores", "100", "01001000", "Sao Paulo", "SP"),
+                "Unidade Matriz",
+                "COMERCIAL",
+                BigDecimal.valueOf(250.75)
+        );
+
+        MockHttpServletResponse response = mvc.perform(
+                post("/api/unidadesconsumidoras")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(unidadeConsumidoraRequestJson.write(request).getJson())
+        ).andReturn().getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    @DisplayName("Deveria devolver codigo http 400 quando area total for zero ou negativa")
+    @WithMockUser
+    void cadastrarCenario6() throws Exception {
+        UnidadeConsumidoraRequest request = new UnidadeConsumidoraRequest(
+                criarEnderecoRequest(),
+                "Unidade Matriz",
+                "COMERCIAL",
+                BigDecimal.ZERO
+        );
+
+        MockHttpServletResponse response = mvc.perform(
+                post("/api/unidadesconsumidoras")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(unidadeConsumidoraRequestJson.write(request).getJson())
+        ).andReturn().getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
     @DisplayName("Deveria devolver codigo http 200 ao buscar por id")
     @WithMockUser
     void buscarPorIdCenario1() throws Exception {

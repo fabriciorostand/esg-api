@@ -118,6 +118,26 @@ class ConsumoEnergeticoControllerTest {
     }
 
     @Test
+    @DisplayName("Deveria devolver codigo http 400 quando consumo for zero ou negativo")
+    @WithMockUser
+    void cadastrarCenario4() throws Exception {
+        ConsumoEnergeticoRequest request = new ConsumoEnergeticoRequest(
+                1L,
+                BigDecimal.ZERO,
+                LocalDate.of(2026, 1, 15)
+        );
+
+        MockHttpServletResponse response = mvc.perform(
+                post("/api/consumosenergeticos")
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(consumoEnergeticoRequestJson.write(request).getJson())
+        ).andReturn().getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
     @DisplayName("Deveria devolver codigo http 200 ao buscar por id")
     @WithMockUser
     void buscarPorIdCenario1() throws Exception {

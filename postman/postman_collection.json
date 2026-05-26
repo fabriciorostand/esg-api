@@ -334,9 +334,102 @@
           "response": []
         },
         {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/dispositivos?page=0&size=10&sort=id,asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "dispositivos"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Buscar por ID",
           "request": {
             "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/dispositivos/{{idDispositivo}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "dispositivos",
+                "{{idDispositivo}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idUnidadeConsumidora\": {{idUnidadeConsumidora}},\n  \"nome\": \"Ar condicionado atualizado\",\n  \"potenciaNominal\": 1250.0,\n  \"status\": \"ATIVO\",\n  \"consumoMinimoAtivo\": 0.5,\n  \"tempoOciosidadeLimite\": 30\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/dispositivos/{{idDispositivo}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "dispositivos",
+                "{{idDispositivo}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  if (body.id) pm.collectionVariables.set('idDispositivo', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Deletar",
+          "request": {
+            "method": "DELETE",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/api/dispositivos/{{idDispositivo}}",
@@ -399,9 +492,102 @@
           "response": []
         },
         {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/sensores?page=0&size=10&sort=id,asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sensores"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Buscar por ID",
           "request": {
             "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/sensores/{{idSensor}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sensores",
+                "{{idSensor}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idDispositivo\": {{idDispositivo}},\n  \"ativo\": \"N\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/sensores/{{idSensor}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sensores",
+                "{{idSensor}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  if (body.id) pm.collectionVariables.set('idSensor', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Deletar",
+          "request": {
+            "method": "DELETE",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/api/sensores/{{idSensor}}",
@@ -622,9 +808,102 @@
           "response": []
         },
         {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas?page=0&size=10&sort=id,asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Buscar por ID",
           "request": {
             "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{idMetaConsumo}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{idMetaConsumo}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idDispositivo\": {{idDispositivo}},\n  \"tipo\": \"MTH\",\n  \"metaKwh\": 280.00,\n  \"dataInicio\": \"2026-05-01\",\n  \"dataFim\": \"2026-05-31\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/metas/{{idMetaConsumo}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "metas",
+                "{{idMetaConsumo}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  if (body.id) pm.collectionVariables.set('idMetaConsumo', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Deletar",
+          "request": {
+            "method": "DELETE",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/api/metas/{{idMetaConsumo}}",
@@ -687,9 +966,102 @@
           "response": []
         },
         {
+          "name": "Listar",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/alertas?page=0&size=10&sort=id,asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "alertas"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Buscar por ID",
           "request": {
             "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/alertas/{{idAlertaMeta}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "alertas",
+                "{{idAlertaMeta}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Atualizar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idMetaConsumo\": {{idMetaConsumo}},\n  \"valorAlertaMeta\": 260.00,\n  \"dataAlertaMeta\": \"2026-05-21\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/alertas/{{idAlertaMeta}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "alertas",
+                "{{idAlertaMeta}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  if (body.id) pm.collectionVariables.set('idAlertaMeta', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Deletar",
+          "request": {
+            "method": "DELETE",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/api/alertas/{{idAlertaMeta}}",
@@ -709,7 +1081,7 @@
     },
     {
       "name": "Actuator",
-      "description": "Endpoints de observabilidade expostos por management.endpoints.web.exposure.include=*.",
+      "description": "Endpoints de observabilidade expostos por management.endpoints.web.exposure.include=health,info,metrics.",
       "item": [
         {
           "name": "Discovery",
@@ -741,25 +1113,6 @@
               "path": [
                 "actuator",
                 "health"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Health - DB",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/actuator/health/db",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "health",
-                "db"
               ]
             }
           },
@@ -815,252 +1168,6 @@
                 "actuator",
                 "metrics",
                 "{{actuatorMetricName}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Mappings",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/actuator/mappings",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "mappings"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Beans",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/actuator/beans",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "beans"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Config Props",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/actuator/configprops",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "configprops"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Conditions",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/actuator/conditions",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "conditions"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Environment",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/actuator/env",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "env"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Environment Property",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/actuator/env/{{actuatorEnvProperty}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "env",
-                "{{actuatorEnvProperty}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Loggers",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/actuator/loggers",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "loggers"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Logger by Name",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/actuator/loggers/{{actuatorLoggerName}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "loggers",
-                "{{actuatorLoggerName}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Set Logger Level",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"configuredLevel\": \"DEBUG\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/actuator/loggers/{{actuatorLoggerName}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "loggers",
-                "{{actuatorLoggerName}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Flyway",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/actuator/flyway",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "flyway"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Scheduled Tasks",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/actuator/scheduledtasks",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "scheduledtasks"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Thread Dump",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/actuator/threaddump",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "threaddump"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Heap Dump",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/actuator/heapdump",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "actuator",
-                "heapdump"
               ]
             }
           },

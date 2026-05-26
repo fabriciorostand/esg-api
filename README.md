@@ -21,7 +21,7 @@ API REST desenvolvida em Spring Boot para gerenciar eficiência energética e su
 - **Spring Actuator**
 - **Springdoc OpenAPI**
 - **Flyway**
-- **Oracle Database / Oracle XE**
+- **Oracle Database / Oracle Free**
 - **JWT com Auth0 Java JWT**
 - **MapStruct**
 - **Lombok**
@@ -50,14 +50,14 @@ cd esg-api
 
 ### 2. Configurar o banco de dados
 
-O projeto está preparado para utilizar Oracle XE via Docker Compose. O serviço do banco está definido em `docker/docker-compose.yml` com as seguintes credenciais padrão:
+O projeto está preparado para utilizar Oracle Database Free via Docker Compose. O serviço do banco está definido em `docker/docker-compose.yml` com as seguintes credenciais padrão:
 
 | Configuração           | Valor       |
 |------------------------|-------------|
 | Host no Docker Compose | `oracle-db` |
 | Host local             | `localhost` |
 | Porta                  | `1521`      |
-| Service name           | `xepdb1`    |
+| Service name           | `freepdb1`  |
 | Usuário                | `esg_user`  |
 | Senha                  | `esg_pass`  |
 
@@ -78,7 +78,7 @@ src/main/resources/application.properties
 Configuração padrão para execução dentro da rede Docker:
 
 ```properties
-spring.datasource.url=jdbc:oracle:thin:@oracle-db:1521/xepdb1
+spring.datasource.url=jdbc:oracle:thin:@oracle-db:1521/freepdb1
 spring.datasource.username=esg_user
 spring.datasource.password=esg_pass
 spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
@@ -86,27 +86,17 @@ spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
 spring.jpa.hibernate.ddl-auto=validate
 spring.flyway.enabled=true
 
-api.security.token.secret=12345678
+api.security.token.secret=${API_SECURITY_TOKEN_SECRET}
 ```
 
-Para executar a aplicação diretamente na máquina, use o profile `test`, que aponta para `localhost`:
+Para executar a aplicação diretamente na máquina, use o profile `test`, que aponta para `localhost`. A chave JWT continua obrigatória e deve ser informada por variável de ambiente:
 
 ```properties
-spring.datasource.url=jdbc:oracle:thin:@localhost:1521/xepdb1
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521/freepdb1
 spring.datasource.username=esg_user
 spring.datasource.password=esg_pass
+api.security.token.secret=${API_SECURITY_TOKEN_SECRET}
 ```
-
-Também é possível sobrescrever as configurações por variáveis de ambiente:
-
-```bash
-SPRING_DATASOURCE_URL=jdbc:oracle:thin:@localhost:1521/xepdb1
-SPRING_DATASOURCE_USERNAME=esg_user
-SPRING_DATASOURCE_PASSWORD=esg_pass
-API_SECURITY_TOKEN_SECRET=sua-chave-secreta
-```
-
-> Em ambientes reais, não mantenha segredos no repositório. Use variáveis de ambiente, secret manager ou configuração externa.
 
 ### 4. Executar a API com Maven
 
@@ -130,30 +120,52 @@ http://localhost:8080
 
 ### 5. Executar com Docker Compose
 
-Como o `Dockerfile` copia o artefato gerado em `target/*.jar`, primeiro gere o pacote da aplicação:
+O `Dockerfile` utiliza build multi-stage: a primeira etapa compila a aplicação com Maven e a segunda executa apenas o `.jar` gerado. Por isso, não é necessário gerar o pacote manualmente antes de subir os contêineres.
+
+Antes de gerar a imagem Docker, recomenda-se executar a suíte de testes localmente. O `Dockerfile` empacota a aplicação com `-DskipTests` porque os testes de integração usam Testcontainers e Oracle Database Free, ficando mais adequados para execução fora do processo de build da imagem.
+
+Antes de subir os contêineres, crie o arquivo `.env` a partir do exemplo versionado:
 
 No Windows PowerShell:
 
 ```powershell
-.\mvnw.cmd clean package
-docker compose -f docker/docker-compose.yml up --build
+Copy-Item .env.example .env
 ```
 
 No Linux/macOS:
 
 ```bash
-./mvnw clean package
-docker compose -f docker/docker-compose.yml up --build
+cp .env.example .env
+```
+
+Abra o arquivo `.env` e ajuste a chave JWT, se desejar:
+
+```env
+API_SECURITY_TOKEN_SECRET=troque-por-uma-chave-com-8-caracteres
+```
+
+No Windows PowerShell:
+
+```powershell
+.\mvnw.cmd test
+docker compose --env-file .env -f docker/docker-compose.yml up --build
+```
+
+No Linux/macOS:
+
+```bash
+./mvnw test
+docker compose --env-file .env -f docker/docker-compose.yml up --build
 ```
 
 ## Variáveis de Ambiente
 
 | Variável                     | Descrição                           | Valor padrão local                        |
 |------------------------------|-------------------------------------|-------------------------------------------|
-| `SPRING_DATASOURCE_URL`      | URL JDBC do Oracle                  | `jdbc:oracle:thin:@localhost:1521/xepdb1` |
+| `SPRING_DATASOURCE_URL`      | URL JDBC do Oracle                  | `jdbc:oracle:thin:@localhost:1521/freepdb1` |
 | `SPRING_DATASOURCE_USERNAME` | Usuário do banco                    | `esg_user`                                |
 | `SPRING_DATASOURCE_PASSWORD` | Senha do banco                      | `esg_pass`                                |
-| `API_SECURITY_TOKEN_SECRET`  | Chave usada para assinar tokens JWT | `12345678`                                |
+| `API_SECURITY_TOKEN_SECRET`  | Chave usada para assinar tokens JWT, com no mínimo 8 caracteres | Obrigatória em todos os perfis; no Docker Compose pode ser definida pelo arquivo `.env` |
 
 ## Documentação da API com Springdoc OpenAPI
 
@@ -224,6 +236,17 @@ No Linux/macOS:
 ```bash
 ./mvnw test
 ```
+
+Além dos testes de controller com mocks, o projeto possui testes de integração com **Testcontainers** e **Oracle Database Free**. Esses testes sobem automaticamente um banco Oracle temporário, aplicam as migrações Flyway reais e removem o container ao final da execução.
+
+Os testes devem ser executados antes da build Docker. No `Dockerfile`, o empacotamento usa `-DskipTests` apenas para manter a construção da imagem mais simples e previsível; a validação da qualidade fica no comando `mvnw test`.
+
+Para rodar os testes de integração:
+
+- Deixe o **Docker Desktop** aberto;
+- Não é necessário executar `docker compose up`;
+- Execute `.\mvnw.cmd test` no Windows ou `./mvnw test` no Linux/macOS;
+- A primeira execução pode demorar mais porque o Docker precisará baixar a imagem Oracle usada pelos testes.
 
 ## Migrações de Banco de Dados
 

@@ -5,6 +5,7 @@ import br.com.fiap.esg.domain.meta_consumo.dto.MetaConsumoResponse;
 import br.com.fiap.esg.domain.meta_consumo.MetaConsumo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = {DispositivoMapper.class})
 public interface MetaConsumoMapper {
@@ -14,4 +15,8 @@ public interface MetaConsumoMapper {
     MetaConsumo paraEntidade(MetaConsumoRequest request);
 
     MetaConsumoResponse paraResponse(MetaConsumo metaConsumo);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "dispositivo", ignore = true)
+    void atualizarEntidade(MetaConsumoRequest request, @MappingTarget MetaConsumo metaConsumo);
 }

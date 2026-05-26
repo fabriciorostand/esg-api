@@ -2,6 +2,7 @@ package br.com.fiap.esg.infra.security;
 
 import br.com.fiap.esg.domain.usuario.Usuario;
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
@@ -15,13 +16,19 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    @Value("${api.security.token.secret}")
-    private String secret;
+    private final Algorithm algoritmo;
+    private final JWTVerifier verifier;
+
+    public TokenService(@Value("${api.security.token.secret}") String secret) {
+        validarSecret(secret);
+        this.algoritmo = Algorithm.HMAC256(secret);
+        this.verifier = JWT.require(algoritmo)
+                .withIssuer("ESG API")
+                .build();
+    }
 
     public String gerarToken(Usuario usuario) {
         try {
-            Algorithm algoritmo = Algorithm.HMAC256(secret);
-
             return JWT.create()
                     .withIssuer("ESG API")
                     .withSubject(usuario.getEmail())
@@ -34,14 +41,20 @@ public class TokenService {
 
     public String getSubject(String tokenJWT) {
         try {
-            Algorithm algoritmo = Algorithm.HMAC256(secret);
-            return JWT.require(algoritmo)
-                    .withIssuer("ESG API")
-                    .build()
-                    .verify(tokenJWT)
+            return verifier.verify(tokenJWT)
                     .getSubject();
         } catch (JWTVerificationException exception) {
-            throw new RuntimeException("Token JWT inválido ou expirado!");
+            throw new TokenInvalidoException("Token JWT invalido ou expirado!");
+        }
+    }
+
+    private void validarSecret(String secret) {
+        if (secret == null || secret.isBlank()) {
+            throw new IllegalStateException("A variavel API_SECURITY_TOKEN_SECRET deve ser informada.");
+        }
+
+        if (secret.length() < 8) {
+            throw new IllegalStateException("A variavel API_SECURITY_TOKEN_SECRET deve ter pelo menos 8 caracteres.");
         }
     }
 
