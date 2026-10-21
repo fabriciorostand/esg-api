@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Cadastro bem-sucedido de unidade consumidora",
+  "type": "object",
+  "required": [
+    "id",
+    "endereco",
+    "nome",
+    "tipo",
+    "areaTotal"
+  ],
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "integer",
+      "examples": [
+        201
+      ],
+      "minimum": 1
+    },
+    "endereco": {
+      "title": "Endereco",
+      "type": "object",
+      "required": [
+        "id",
+        "bairro",
+        "rua",
+        "numero",
+        "cep",
+        "cidade",
+        "uf"
+      ],
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "integer",
+          "examples": [
+            101
+          ],
+          "minimum": 1
+        },
+        "bairro": {
+          "title": "Bairro",
+          "type": "string",
+          "examples": [
+            "Bairro Exemplo"
+          ],
+          "minLength": 1
+        },
+        "rua": {
+          "title": "Rua",
+          "type": "string",
+          "examples": [
+            "Rua Exemplo"
+          ],
+          "minLength": 1
+        },
+        "numero": {
+          "title": "Numero",
+          "type": "string",
+          "examples": [
+            "100"
+          ],
+          "minLength": 1
+        },
+        "cep": {
+          "title": "Cep",
+          "type": "string",
+          "examples": [
+            "01001000"
+          ],
+          "minLength": 1
+        },
+        "cidade": {
+          "title": "Cidade",
+          "type": "string",
+          "examples": [
+            "Cidade Exemplo"
+          ],
+          "minLength": 1
+        },
+        "uf": {
+          "title": "Uf",
+          "type": "string",
+          "examples": [
+            "SP"
+          ],
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "nome": {
+      "title": "Nome",
+      "type": "string",
+      "examples": [
+        "Unidade Exemplo"
+      ],
+      "minLength": 1
+    },
+    "tipo": {
+      "title": "Tipo",
+      "type": "string",
+      "examples": [
+        "COMERCIAL"
+      ],
+      "minLength": 1,
+      "enum": [
+        "ADMINISTRATIVO",
+        "COMERCIAL",
+        "INDUSTRIAL",
+        "OUTRO"
+      ]
+    },
+    "areaTotal": {
+      "title": "Areatotal",
+      "type": "number",
+      "examples": [
+        250.75
+      ],
+      "exclusiveMinimum": 0
+    }
+  },
+  "additionalProperties": false
+}

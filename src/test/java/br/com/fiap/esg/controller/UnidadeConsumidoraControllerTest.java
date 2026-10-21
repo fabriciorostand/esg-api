@@ -1,5 +1,6 @@
 package br.com.fiap.esg.controller;
 
+import br.com.fiap.esg.domain.unidade_consumidora.Tipo;
 import br.com.fiap.esg.domain.unidade_consumidora.dto.EnderecoRequest;
 import br.com.fiap.esg.domain.unidade_consumidora.dto.EnderecoResponse;
 import br.com.fiap.esg.domain.unidade_consumidora.dto.UnidadeConsumidoraRequest;
@@ -115,7 +116,7 @@ class UnidadeConsumidoraControllerTest {
         UnidadeConsumidoraRequest request = new UnidadeConsumidoraRequest(
                 criarEnderecoRequest(),
                 "",
-                "COMERCIAL",
+                Tipo.COMERCIAL,
                 BigDecimal.valueOf(250.75)
         );
 
@@ -136,7 +137,7 @@ class UnidadeConsumidoraControllerTest {
         UnidadeConsumidoraRequest request = new UnidadeConsumidoraRequest(
                 new EnderecoRequest("", "Rua das Flores", "100", "01001000", "Sao Paulo", "SP"),
                 "Unidade Matriz",
-                "COMERCIAL",
+                Tipo.COMERCIAL,
                 BigDecimal.valueOf(250.75)
         );
 
@@ -157,7 +158,7 @@ class UnidadeConsumidoraControllerTest {
         UnidadeConsumidoraRequest request = new UnidadeConsumidoraRequest(
                 criarEnderecoRequest(),
                 "Unidade Matriz",
-                "COMERCIAL",
+                Tipo.COMERCIAL,
                 BigDecimal.ZERO
         );
 
@@ -242,7 +243,7 @@ class UnidadeConsumidoraControllerTest {
         UnidadeConsumidoraRequest request = new UnidadeConsumidoraRequest(
                 null,
                 "Unidade Matriz",
-                "COMERCIAL",
+                Tipo.COMERCIAL,
                 BigDecimal.valueOf(250.75)
         );
 
@@ -286,7 +287,7 @@ class UnidadeConsumidoraControllerTest {
         return new UnidadeConsumidoraRequest(
                 criarEnderecoRequest(),
                 "Unidade Matriz",
-                "COMERCIAL",
+                Tipo.COMERCIAL,
                 BigDecimal.valueOf(250.75)
         );
     }
@@ -307,7 +308,7 @@ class UnidadeConsumidoraControllerTest {
                 1L,
                 new EnderecoResponse(1L, "Centro", "Rua das Flores", "100", "01001000", "Sao Paulo", "SP"),
                 "Unidade Matriz",
-                "COMERCIAL",
+                Tipo.COMERCIAL,
                 BigDecimal.valueOf(250.75)
         );
     }

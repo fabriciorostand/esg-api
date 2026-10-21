@@ -22,7 +22,7 @@ services:
 
   esg-api:
     build:
-      context: ..
+      context: .
       dockerfile: docker/Dockerfile
     container_name: esg_spring_api
     ports:

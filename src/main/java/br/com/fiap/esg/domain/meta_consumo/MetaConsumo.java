@@ -22,8 +22,9 @@ public class MetaConsumo {
     @JoinColumn(name = "id_dispositivo", nullable = false)
     private Dispositivo dispositivo;
 
-    @Column(name = "tipo", nullable = false, length = 3)
-    private String tipo;
+    @Column(name = "tipo", nullable = false, length = 10)
+    @Enumerated(EnumType.STRING)
+    private Tipo tipo;
 
     @Column(name = "meta_kwh", nullable = false)
     private BigDecimal metaKwh;

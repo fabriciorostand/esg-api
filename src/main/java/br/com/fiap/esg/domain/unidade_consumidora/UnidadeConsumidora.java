@@ -24,7 +24,8 @@ public class UnidadeConsumidora {
     private String nome;
 
     @Column(name = "tipo", nullable = false, length = 20)
-    private String tipo;
+    @Enumerated(EnumType.STRING)
+    private Tipo tipo;
 
     @Column(name = "area_total", nullable = false)
     private BigDecimal areaTotal;

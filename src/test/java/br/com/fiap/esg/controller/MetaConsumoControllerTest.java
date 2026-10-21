@@ -1,6 +1,7 @@
 package br.com.fiap.esg.controller;
 
 import br.com.fiap.esg.domain.meta_consumo.MetaConsumoService;
+import br.com.fiap.esg.domain.meta_consumo.Tipo;
 import br.com.fiap.esg.domain.meta_consumo.dto.MetaConsumoRequest;
 import br.com.fiap.esg.domain.meta_consumo.dto.MetaConsumoResponse;
 import br.com.fiap.esg.domain.usuario.UsuarioRepository;
@@ -32,6 +33,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -95,12 +97,12 @@ class MetaConsumoControllerTest {
     }
 
     @Test
-    @DisplayName("Deveria devolver codigo http 400 quando tipo ultrapassar tamanho maximo")
+    @DisplayName("Deveria devolver codigo http 400 quando tipo nao for informado")
     @WithMockUser
     void cadastrarCenario3() throws Exception {
         MetaConsumoRequest request = new MetaConsumoRequest(
                 1L,
-                "MENSAL",
+                null,
                 BigDecimal.valueOf(500),
                 LocalDate.of(2026, 1, 1),
                 LocalDate.of(2026, 1, 31)
@@ -114,28 +116,34 @@ class MetaConsumoControllerTest {
         ).andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).contains("O tipo da meta é obrigatório");
+        verifyNoInteractions(service);
     }
 
     @Test
     @DisplayName("Deveria devolver codigo http 400 quando tipo for invalido")
     @WithMockUser
     void cadastrarCenario4() throws Exception {
-        MetaConsumoRequest request = new MetaConsumoRequest(
-                1L,
-                "XXX",
-                BigDecimal.valueOf(500),
-                LocalDate.of(2026, 1, 1),
-                LocalDate.of(2026, 1, 31)
-        );
+        String request = """
+                {
+                  "idDispositivo": 1,
+                  "tipo": "XXX",
+                  "metaKwh": 500,
+                  "dataInicio": "2026-01-01",
+                  "dataFim": "2026-01-31"
+                }
+                """;
 
         MockHttpServletResponse response = mvc.perform(
                 post("/api/metas")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(metaConsumoRequestJson.write(request).getJson())
+                        .content(request)
         ).andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).isEqualTo("Corpo da requisição inválido ou malformado");
+        verifyNoInteractions(service);
     }
 
     @Test
@@ -144,7 +152,7 @@ class MetaConsumoControllerTest {
     void cadastrarCenario5() throws Exception {
         MetaConsumoRequest request = new MetaConsumoRequest(
                 1L,
-                "MTH",
+                Tipo.MES,
                 BigDecimal.ZERO,
                 LocalDate.of(2026, 1, 1),
                 LocalDate.of(2026, 1, 31)
@@ -166,7 +174,7 @@ class MetaConsumoControllerTest {
     void cadastrarCenario6() throws Exception {
         MetaConsumoRequest request = new MetaConsumoRequest(
                 1L,
-                "MTH",
+                Tipo.MES,
                 BigDecimal.valueOf(500),
                 LocalDate.of(2026, 1, 31),
                 LocalDate.of(2026, 1, 1)
@@ -223,7 +231,7 @@ class MetaConsumoControllerTest {
                 .andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        assertThat(response.getContentAsString()).contains("MTH");
+        assertThat(response.getContentAsString()).contains("MES");
     }
 
     @Test
@@ -252,22 +260,26 @@ class MetaConsumoControllerTest {
     @DisplayName("Deveria devolver codigo http 400 ao atualizar com informacoes invalidas")
     @WithMockUser
     void atualizarCenario2() throws Exception {
-        MetaConsumoRequest request = new MetaConsumoRequest(
-                1L,
-                "XXX",
-                BigDecimal.valueOf(500),
-                LocalDate.of(2026, 1, 1),
-                LocalDate.of(2026, 1, 31)
-        );
+        String request = """
+                {
+                  "idDispositivo": 1,
+                  "tipo": "XXX",
+                  "metaKwh": 500,
+                  "dataInicio": "2026-01-01",
+                  "dataFim": "2026-01-31"
+                }
+                """;
 
         MockHttpServletResponse response = mvc.perform(
                 put("/api/metas/1")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(metaConsumoRequestJson.write(request).getJson())
+                        .content(request)
         ).andReturn().getResponse();
 
         assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+        assertThat(response.getContentAsString()).isEqualTo("Corpo da requisição inválido ou malformado");
+        verifyNoInteractions(service);
     }
 
     @Test
@@ -299,7 +311,7 @@ class MetaConsumoControllerTest {
     private MetaConsumoRequest criarRequest() {
         return new MetaConsumoRequest(
                 1L,
-                "MTH",
+                Tipo.MES,
                 BigDecimal.valueOf(500),
                 LocalDate.of(2026, 1, 1),
                 LocalDate.of(2026, 1, 31)
@@ -310,7 +322,7 @@ class MetaConsumoControllerTest {
         return new MetaConsumoResponse(
                 1L,
                 null,
-                "MTH",
+                Tipo.MES,
                 BigDecimal.valueOf(500),
                 LocalDate.of(2026, 1, 1),
                 LocalDate.of(2026, 1, 31)

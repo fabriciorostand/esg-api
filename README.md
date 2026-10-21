@@ -50,7 +50,7 @@ cd esg-api
 
 ### 2. Configurar o banco de dados
 
-O projeto está preparado para utilizar Oracle Database Free via Docker Compose. O serviço do banco está definido em `docker/docker-compose.yml` com as seguintes credenciais padrão:
+O projeto está preparado para utilizar Oracle Database Free via Docker Compose. O serviço do banco está definido em `compose.yml`, com as seguintes credenciais padrão:
 
 | Configuração           | Valor       |
 |------------------------|-------------|
@@ -61,10 +61,30 @@ O projeto está preparado para utilizar Oracle Database Free via Docker Compose.
 | Usuário                | `esg_user`  |
 | Senha                  | `esg_pass`  |
 
-Para subir apenas o banco de dados:
+Antes de executar os comandos do Compose, crie o arquivo `.env` a partir do exemplo versionado. A chave JWT precisa estar definida mesmo ao subir apenas o banco, pois o Compose resolve as variáveis de todos os serviços.
+
+No Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+No Linux/macOS:
 
 ```bash
-docker compose -f docker/docker-compose.yml up -d oracle-db
+cp .env.example .env
+```
+
+Abra o arquivo `.env` e ajuste a chave JWT, respeitando o mínimo de 8 caracteres:
+
+```env
+API_SECURITY_TOKEN_SECRET=troque-por-uma-chave-com-8-caracteres
+```
+
+Para subir apenas o banco de dados, execute na raiz do repositório:
+
+```bash
+docker compose --env-file .env -f compose.yml up -d oracle-db
 ```
 
 ### 3. Configurar o `application.properties`
@@ -100,15 +120,19 @@ api.security.token.secret=${API_SECURITY_TOKEN_SECRET}
 
 ### 4. Executar a API com Maven
 
+O Maven não carrega automaticamente o arquivo `.env` usado pelo Compose. Antes de iniciar a aplicação, defina a variável abaixo com o mesmo valor configurado nesse arquivo.
+
 No Windows PowerShell:
 
 ```powershell
+$env:API_SECURITY_TOKEN_SECRET = 'sua-chave-com-8-ou-mais-caracteres'
 .\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=test"
 ```
 
 No Linux/macOS:
 
 ```bash
+export API_SECURITY_TOKEN_SECRET='sua-chave-com-8-ou-mais-caracteres'
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=test
 ```
 
@@ -124,38 +148,20 @@ O `Dockerfile` utiliza build multi-stage: a primeira etapa compila a aplicação
 
 Antes de gerar a imagem Docker, recomenda-se executar a suíte de testes localmente. O `Dockerfile` empacota a aplicação com `-DskipTests` porque os testes de integração usam Testcontainers e Oracle Database Free, ficando mais adequados para execução fora do processo de build da imagem.
 
-Antes de subir os contêineres, crie o arquivo `.env` a partir do exemplo versionado:
-
-No Windows PowerShell:
-
-```powershell
-Copy-Item .env.example .env
-```
-
-No Linux/macOS:
-
-```bash
-cp .env.example .env
-```
-
-Abra o arquivo `.env` e ajuste a chave JWT, se desejar:
-
-```env
-API_SECURITY_TOKEN_SECRET=troque-por-uma-chave-com-8-caracteres
-```
+Com o arquivo `.env` configurado, execute os comandos abaixo na raiz do repositório.
 
 No Windows PowerShell:
 
 ```powershell
 .\mvnw.cmd test
-docker compose --env-file .env -f docker/docker-compose.yml up --build
+docker compose --env-file .env -f compose.yml up --build
 ```
 
 No Linux/macOS:
 
 ```bash
 ./mvnw test
-docker compose --env-file .env -f docker/docker-compose.yml up --build
+docker compose --env-file .env -f compose.yml up --build
 ```
 
 ## Variáveis de Ambiente
@@ -223,30 +229,120 @@ Para usar:
 
 ## Testes
 
-Execute a suíte de testes com:
+### Preparar o ambiente
+
+Execute os comandos na raiz do repositório, onde está o `pom.xml`.
+
+1. Instale o **JDK 21** e configure `JAVA_HOME` para apontar para essa instalação.
+2. Inicie o **Docker Desktop** com contêineres Linux no Windows/macOS, ou o serviço Docker no Linux.
+3. Confirme que o Maven Wrapper usa o Java esperado e que o Docker está acessível:
 
 No Windows PowerShell:
 
 ```powershell
-.\mvnw.cmd test
+.\mvnw.cmd -version
+docker info
 ```
 
 No Linux/macOS:
 
 ```bash
-./mvnw test
+chmod +x mvnw
+./mvnw -version
+docker info
 ```
 
-Além dos testes de controller com mocks, o projeto possui testes de integração com **Testcontainers** e **Oracle Database Free**. Esses testes sobem automaticamente um banco Oracle temporário, aplicam as migrações Flyway reais e removem o container ao final da execução.
+O Wrapper baixa a versão do Maven configurada no projeto. Na primeira execução, também é necessário acesso à internet para baixar as dependências e a imagem `gvenzl/oracle-free:23-slim-faststart`.
 
-Os testes devem ser executados antes da build Docker. No `Dockerfile`, o empacotamento usa `-DskipTests` apenas para manter a construção da imagem mais simples e previsível; a validação da qualidade fica no comando `mvnw test`.
+**Não é necessário subir a API ou o banco pelo Compose, criar um `.env` ou definir a chave JWT para executar os testes.** As configurações de integração e BDD fornecem uma chave exclusiva de teste e substituem a conexão do banco pelos dados do Oracle temporário criado pelo Testcontainers. As migrações Flyway são aplicadas automaticamente, e os contêineres temporários são removidos ao encerrar a execução.
 
-Para rodar os testes de integração:
+### Tipos de testes
 
-- Deixe o **Docker Desktop** aberto;
-- Não é necessário executar `docker compose up`;
-- Execute `.\mvnw.cmd test` no Windows ou `./mvnw test` no Linux/macOS;
-- A primeira execução pode demorar mais porque o Docker precisará baixar a imagem Oracle usada pelos testes.
+| Grupo | O que valida | Precisa de Docker? |
+|-------|--------------|--------------------|
+| Controllers (`controller/*Test`) | Rotas, validações e respostas com MockMvc e serviços simulados | Não |
+| Validador e schemas (`bdd/contract/*Test`) | Aceitação e rejeição de exemplos JSON pelos contratos | Não |
+| Integração (`integration/EsgApiIntegrationTest`) | Aplicação, persistência e migrações reais, com requisições via MockMvc | Sim |
+| BDD (`bdd/runner/TestRunner`) | Cenários Gherkin de cadastro e de contrato, usando REST Assured com HTTP real e Oracle temporário | Sim |
+
+No BDD, o Spring Boot inicia a API em uma porta aleatória. Os steps preparam os cadastros necessários e fazem a autenticação pelas rotas da aplicação. O `Hook` limpa as tabelas do banco de teste antes de cada cenário, permitindo repetir os testes sem conflitos com dados anteriores.
+
+### Executar a suíte completa
+
+O comando abaixo executa todos os grupos, incluindo o `TestRunner` do Cucumber:
+
+No Windows PowerShell:
+
+```powershell
+.\mvnw.cmd clean test
+```
+
+No Linux/macOS:
+
+```bash
+./mvnw clean test
+```
+
+Mantenha o Docker disponível até o término. O download e a inicialização do Oracle podem tornar a primeira execução mais demorada.
+
+### Executar grupos específicos
+
+No Windows PowerShell:
+
+```powershell
+# Controllers, sem Docker
+.\mvnw.cmd test "-Dtest=*ControllerTest"
+
+# Validador e schemas, sem Docker
+.\mvnw.cmd test "-Dtest=ContratoStepsTest,ContratosCadastroTest"
+
+# Integração com Oracle temporário
+.\mvnw.cmd test "-Dtest=EsgApiIntegrationTest"
+
+# Todos os cenários BDD, incluindo contratos via HTTP
+.\mvnw.cmd test "-Dtest=br.com.fiap.esg.bdd.runner.TestRunner"
+```
+
+No Linux/macOS:
+
+```bash
+# Controllers, sem Docker
+./mvnw test '-Dtest=*ControllerTest'
+
+# Validador e schemas, sem Docker
+./mvnw test '-Dtest=ContratoStepsTest,ContratosCadastroTest'
+
+# Integração com Oracle temporário
+./mvnw test '-Dtest=EsgApiIntegrationTest'
+
+# Todos os cenários BDD, incluindo contratos via HTTP
+./mvnw test '-Dtest=br.com.fiap.esg.bdd.runner.TestRunner'
+```
+
+Para executar apenas uma classe de teste, substitua o valor de `-Dtest` pelo nome dela, como `DispositivoControllerTest`.
+
+### Features, contratos e relatórios
+
+Os arquivos usados pelo BDD ficam em:
+
+| Caminho | Conteúdo |
+|---------|----------|
+| `src/test/resources/features/` | Features Gherkin organizadas por domínio, incluindo os arquivos `*Contrato.feature` |
+| `src/test/resources/schemas/` | Schemas JSON das respostas de cadastro bem-sucedido |
+| `src/test/java/br/com/fiap/esg/bdd/steps/` | Implementação dos passos e das validações HTTP e de contrato |
+| `src/test/java/br/com/fiap/esg/bdd/infra/` | Integração do Cucumber com Spring Boot e configuração do Oracle temporário |
+| `src/test/java/br/com/fiap/esg/bdd/hook/` | Preparação e limpeza dos cenários |
+| `src/test/java/br/com/fiap/esg/bdd/runner/` | Runner do Cucumber na JUnit Platform |
+
+Após a execução, consulte:
+
+- **Resultado no terminal:** o Maven apresenta o resumo dos testes e indica `BUILD SUCCESS` quando a execução passa.
+- **Relatório BDD:** abra `target/cucumber-reports.html` no navegador após executar o `TestRunner`, isoladamente ou na suíte completa.
+- **Relatórios Maven Surefire:** os arquivos `.txt` e `.xml` em `target/surefire-reports/` detalham os resultados e as falhas dos testes.
+
+Os relatórios ficam em `target/` e são apagados pelo comando `clean` antes de uma nova execução.
+
+Execute a suíte completa antes de gerar a imagem Docker. O `Dockerfile` usa `-DskipTests` no empacotamento; a construção da imagem não substitui a execução dos testes.
 
 ## Migrações de Banco de Dados
 
@@ -261,18 +357,20 @@ Ao iniciar a aplicação com `spring.flyway.enabled=true`, o Flyway aplica autom
 ## Estrutura do Projeto
 
 ```text
-src
-|-- main
-|   |-- java/br/com/fiap/esg
-|   |   |-- controller      # Controllers REST
-|   |   |-- domain          # Entidades, serviços, repositórios e DTOs
-|   |   |-- infra           # Segurança, exceções e configuração OpenAPI
-|   |   `-- mapper          # Mapeadores MapStruct
-|   `-- resources
-|       |-- application.properties
-|       |-- application-test.properties
-|       `-- db/migration    # Scripts Flyway
-|-- test                    # Testes automatizados
-|-- docker                  # Dockerfile e Docker Compose
-`-- postman                 # Coleção Postman
+|-- docker
+|   `-- Dockerfile
+|-- postman                 # Coleção Postman
+|-- src
+|   |-- main
+|   |   |-- java/br/com/fiap/esg
+|   |   |   |-- controller  # Controllers REST
+|   |   |   |-- domain      # Entidades, serviços, repositórios e DTOs
+|   |   |   |-- infra       # Segurança, exceções e configuração OpenAPI
+|   |   |   `-- mapper      # Mapeadores MapStruct
+|   |   `-- resources
+|   |       |-- application.properties
+|   |       |-- application-test.properties
+|   |       `-- db/migration # Scripts Flyway
+|   `-- test                # Testes automatizados
+|-- compose.yml             # Docker Compose
 ```

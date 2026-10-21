@@ -1,5 +1,7 @@
 package br.com.fiap.esg.domain.unidade_consumidora.dto;
 
+import br.com.fiap.esg.domain.unidade_consumidora.Tipo;
+
 import java.math.BigDecimal;
 
 public record UnidadeConsumidoraResponse(
@@ -10,7 +12,7 @@ public record UnidadeConsumidoraResponse(
 
         String nome,
 
-        String tipo,
+        Tipo tipo,
 
         BigDecimal areaTotal
 

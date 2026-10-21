@@ -1,0 +1,296 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Cadastro bem-sucedido de alerta de meta",
+  "type": "object",
+  "required": [
+    "id",
+    "metaConsumo",
+    "valorAlertaMeta",
+    "dataAlertaMeta"
+  ],
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "integer",
+      "examples": [
+        701
+      ],
+      "minimum": 1
+    },
+    "metaConsumo": {
+      "title": "Metaconsumo",
+      "type": "object",
+      "required": [
+        "id",
+        "dispositivo",
+        "tipo",
+        "metaKwh",
+        "dataInicio",
+        "dataFim"
+      ],
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "integer",
+          "examples": [
+            501
+          ],
+          "minimum": 1
+        },
+        "dispositivo": {
+          "title": "Dispositivo",
+          "type": "object",
+          "required": [
+            "id",
+            "unidadeConsumidora",
+            "nome",
+            "potenciaNominal",
+            "status",
+            "consumoMinimoAtivo",
+            "tempoOciosidadeLimite"
+          ],
+          "properties": {
+            "id": {
+              "title": "Id",
+              "type": "integer",
+              "examples": [
+                301
+              ],
+              "minimum": 1
+            },
+            "unidadeConsumidora": {
+              "title": "Unidadeconsumidora",
+              "type": "object",
+              "required": [
+                "id",
+                "endereco",
+                "nome",
+                "tipo",
+                "areaTotal"
+              ],
+              "properties": {
+                "id": {
+                  "title": "Id",
+                  "type": "integer",
+                  "examples": [
+                    201
+                  ],
+                  "minimum": 1
+                },
+                "endereco": {
+                  "title": "Endereco",
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "bairro",
+                    "rua",
+                    "numero",
+                    "cep",
+                    "cidade",
+                    "uf"
+                  ],
+                  "properties": {
+                    "id": {
+                      "title": "Id",
+                      "type": "integer",
+                      "examples": [
+                        101
+                      ],
+                      "minimum": 1
+                    },
+                    "bairro": {
+                      "title": "Bairro",
+                      "type": "string",
+                      "examples": [
+                        "Bairro Exemplo"
+                      ],
+                      "minLength": 1
+                    },
+                    "rua": {
+                      "title": "Rua",
+                      "type": "string",
+                      "examples": [
+                        "Rua Exemplo"
+                      ],
+                      "minLength": 1
+                    },
+                    "numero": {
+                      "title": "Numero",
+                      "type": "string",
+                      "examples": [
+                        "100"
+                      ],
+                      "minLength": 1
+                    },
+                    "cep": {
+                      "title": "Cep",
+                      "type": "string",
+                      "examples": [
+                        "01001000"
+                      ],
+                      "minLength": 1
+                    },
+                    "cidade": {
+                      "title": "Cidade",
+                      "type": "string",
+                      "examples": [
+                        "Cidade Exemplo"
+                      ],
+                      "minLength": 1
+                    },
+                    "uf": {
+                      "title": "Uf",
+                      "type": "string",
+                      "examples": [
+                        "SP"
+                      ],
+                      "minLength": 1
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "nome": {
+                  "title": "Nome",
+                  "type": "string",
+                  "examples": [
+                    "Unidade Exemplo"
+                  ],
+                  "minLength": 1
+                },
+                "tipo": {
+                  "title": "Tipo",
+                  "type": "string",
+                  "examples": [
+                    "COMERCIAL"
+                  ],
+                  "minLength": 1,
+                  "enum": [
+                    "ADMINISTRATIVO",
+                    "COMERCIAL",
+                    "INDUSTRIAL",
+                    "OUTRO"
+                  ]
+                },
+                "areaTotal": {
+                  "title": "Areatotal",
+                  "type": "number",
+                  "examples": [
+                    250.75
+                  ],
+                  "exclusiveMinimum": 0
+                }
+              },
+              "additionalProperties": false
+            },
+            "nome": {
+              "title": "Nome",
+              "type": "string",
+              "examples": [
+                "Dispositivo Exemplo"
+              ],
+              "minLength": 1
+            },
+            "potenciaNominal": {
+              "title": "Potencianominal",
+              "type": "number",
+              "examples": [
+                1200.5
+              ],
+              "exclusiveMinimum": 0
+            },
+            "status": {
+              "title": "Status",
+              "type": "string",
+              "examples": [
+                "LIGADO"
+              ],
+              "minLength": 1,
+              "enum": [
+                "ATIVO",
+                "INATIVO",
+                "LIGADO",
+                "DESLIGADO"
+              ]
+            },
+            "consumoMinimoAtivo": {
+              "title": "Consumominimoativo",
+              "type": "number",
+              "examples": [
+                0.5
+              ],
+              "exclusiveMinimum": 0
+            },
+            "tempoOciosidadeLimite": {
+              "title": "Tempoociosidadelimite",
+              "type": "integer",
+              "examples": [
+                30
+              ],
+              "minimum": 1
+            }
+          },
+          "additionalProperties": false
+        },
+        "tipo": {
+          "title": "Tipo",
+          "type": "string",
+          "examples": [
+            "MES"
+          ],
+          "minLength": 1,
+          "enum": [
+            "DIA",
+            "SEMANA",
+            "MES",
+            "ANO"
+          ]
+        },
+        "metaKwh": {
+          "title": "Metakwh",
+          "type": "number",
+          "examples": [
+            100.5
+          ],
+          "exclusiveMinimum": 0
+        },
+        "dataInicio": {
+          "title": "Datainicio",
+          "type": "string",
+          "examples": [
+            "2026-10-01"
+          ],
+          "minLength": 1,
+          "format": "date"
+        },
+        "dataFim": {
+          "title": "Datafim",
+          "type": "string",
+          "examples": [
+            "2026-10-31"
+          ],
+          "minLength": 1,
+          "format": "date"
+        }
+      },
+      "additionalProperties": false
+    },
+    "valorAlertaMeta": {
+      "title": "Valoralertameta",
+      "type": "number",
+      "examples": [
+        100.25
+      ],
+      "exclusiveMinimum": 0
+    },
+    "dataAlertaMeta": {
+      "title": "Dataalertameta",
+      "type": "string",
+      "examples": [
+        "2026-10-20"
+      ],
+      "minLength": 1,
+      "format": "date"
+    }
+  },
+  "additionalProperties": false
+}
